@@ -61,6 +61,7 @@ export class Name {
         return this.components.join(DEFAULT_DELIMITER);
     }
 
+    /** Returns properly masked component string */
     // @methodtype get-method
     public getComponent(i: number): string {
         this.assertIsValidIndex(i);
