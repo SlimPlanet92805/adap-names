@@ -14,6 +14,10 @@ export class StringName extends AbstractName {
 
     public initialize(source: string) {
         this.name = source;
+        if (source.length === 0) {
+            this.noComponents = 1;
+            return;
+        }
         this.noComponents = this.getComponents().length;
     }
 
@@ -71,8 +75,12 @@ export class StringName extends AbstractName {
     }
 
     protected getComponents(): string[] {
-        if (this.name.length === 0) {
+        if (this.noComponents === 0) {
             return [];
+        }
+
+        if (this.name.length === 0) {
+            return [""];
         }
 
         const components: string[] = [];
