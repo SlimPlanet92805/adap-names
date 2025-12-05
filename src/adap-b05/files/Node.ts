@@ -1,5 +1,7 @@
+import { Exception } from "../common/Exception";
 import { IllegalArgumentException } from "../common/IllegalArgumentException";
 import { InvalidStateException } from "../common/InvalidStateException";
+import { ServiceFailureException } from "../common/ServiceFailureException";
 
 import { Name } from "../names/Name";
 import { Directory } from "./Directory";
@@ -57,7 +59,20 @@ export class Node {
      * @param bn basename of node being searched for
      */
     public findNodes(bn: string): Set<Node> {
-        throw new Error("needs implementation or deletion");
+        try {
+            const result: Set<Node> = new Set<Node>();
+            const name = this.getBaseName();
+            const isRoot = (this.parentNode === (this as any));
+            if (!isRoot && this.baseName === "") {
+                throw new InvalidStateException("Non-root Nodes must have a base name");
+            }
+            if (name === bn) {
+                result.add(this);
+            }
+            return result;
+        } catch (error) {
+            throw new ServiceFailureException("Failed to find nodes due to integrity violation", error as Exception);
+        }
     }
 
 }
